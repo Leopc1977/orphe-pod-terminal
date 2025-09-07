@@ -8,11 +8,26 @@ import "./index.css"
 
 let history = [];
 let historyIndex = -1;
-const PROMPT = "\x1b[1;32morphe@pod\x1b[0m$ "; // style vert
+const PROMPT = "\x1b[1;32morphe@pod\x1b[0m$ ";
 
-export default function TerminalView() {
+import { useSearchParams } from "next/navigation";
+
+
+export default function TerminalView(props) {
   const terminalRef = useRef(null);
   const fitAddon = new FitAddon();
+
+  const searchParams = useSearchParams();
+  const code = searchParams.get("code");
+
+  useEffect(() => {
+    if (code) {
+      fetch(`/api/callback?code=${code}`)
+        .then(res => res.json())
+        .then(data => console.log("Tokens reçus:", data));
+        console.log("ss")
+    }
+  }, [code]);
 
   useEffect(() => {
     const term = new Terminal({
@@ -33,12 +48,12 @@ export default function TerminalView() {
   
     term.writeln("Welcome to OrphePodTerminal!");
     term.writeln("Type 'help' to see available commands.");
-    term.write(PROMPT); // <-- Affiche le prompt à chaque début de ligne
+    term.write(PROMPT);
   
     let command = "";
 
     function replaceLine(text) {
-      term.write("\x1b[2K\r"); // clear line
+      term.write("\x1b[2K\r");
       term.write(PROMPT + text);
       command = text;
     }
@@ -68,15 +83,17 @@ export default function TerminalView() {
           term.writeln("Available commands: ping, help");
         } else if (command.trim() === "clear") {
             term.reset()
+        } else if (command.trim() === "l") {
+          window.location.href = "/api/login";
         } else if (command.trim() !== "") {
           term.writeln(`Unknown command: ${command}`);
         }
-        command = ""; // reset
-        term.write(PROMPT); // <-- Affiche le prompt à chaque début de ligne
+        command = "";
+        term.write(PROMPT);
       } else if (domEvent.key === "Backspace") {
         if (command.length > 0) {
           command = command.slice(0, -1);
-          term.write("\b \b"); // effacer caractère affiché
+          term.write("\b \b");
         }
       } else {
         command += key;

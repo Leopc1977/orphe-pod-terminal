@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@spotify/web-api-ts-sdk": "^1.2.0",
     "@xterm/addon-fit": "^0.10.0",
     "@xterm/xterm": "^5.5.0",
     "next": "15.5.2",
