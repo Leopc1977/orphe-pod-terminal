@@ -1,7 +1,7 @@
 #terminal-container {
   width: 100vw;
   height: 100vh;
-  background-image: url('/img/nier-background.jpg'); /* ton image ici */
+  background-image: url('/img/nier-background.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -13,7 +13,6 @@
   height: 100%;
 }
 
-/* Canvas de xterm en transparent */
 #terminal canvas {
   background: transparent !important;
 }
