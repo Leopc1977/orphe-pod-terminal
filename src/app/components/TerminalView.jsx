@@ -7,15 +7,14 @@ import "@xterm/xterm/css/xterm.css"
 import "./index.css"
 import useStore from "../../lib/useStore";
 import { useRouter } from "next/navigation";
-
-let history = [];
-let historyIndex = -1;
-const PROMPT = "\x1b[1;32morphe@pod042\x1b[0m$ ";
+import TerminalManager from "../../lib/Terminal";
+import { SpotifyApi } from "@spotify/web-api-ts-sdk";
 
 export default function TerminalView() {
+  const { setAuth, setTerminal, terminal, setSpotifySDK, spotifySDK } = useStore()
+
   const terminalRef = useRef(null);
   const fitAddon = new FitAddon();
-  const { setAuth, terminal, setTerminal } = useStore ()
   const router = useRouter();
 
   useEffect(() => {
@@ -30,94 +29,48 @@ export default function TerminalView() {
     },
       allowTransparency: true
     });
-
     term.loadAddon(fitAddon);
     term.open(terminalRef.current);
     fitAddon.fit();
 
-    setTerminal(term);
+    const newTerminal = new TerminalManager(term)
+    newTerminal.start();
+    setTerminal(newTerminal);
+
+    return () => term.dispose();
   }, []);
 
   useEffect(() => {
-    if (!terminal) return
-    
-    terminal.writeln("Welcome to OrphePodTerminal!");
-    terminal.writeln("Type 'help' to see available commands.");
-    terminal.write(PROMPT);
-  
-    let command = "";
+    if (!terminal) return;
 
-    function replaceLine(text) {
-      terminal.write("\x1b[2K\r");
-      terminal.write(PROMPT + text);
-      command = text;
-    }
-  
-    terminal.onKey(({ key, domEvent }) => {
-      if (domEvent.key === "ArrowUp") {
-        if (historyIndex > 0) {
-          historyIndex--;
-          replaceLine(history[historyIndex]);
-        }
-      } else if (domEvent.key === "ArrowDown") {
-        if (historyIndex < history.length - 1) {
-          historyIndex++;
-          replaceLine(history[historyIndex]);
-        } else {
-          historyIndex = history.length;
-          replaceLine("");
-        }
-      } else if (domEvent.key === "Enter") {
-        history.push(command.trim())
-        historyIndex+=1;
-        terminal.writeln("");
-          
-        if (command.trim() === "ping") {
-          terminal.writeln("pong");
-        } else if (command.trim() === "help") {
-          terminal.writeln("Available commands: ping, help");
-        } else if (command.trim() === "clear") {
-            terminal.reset()
-        } else if (command.trim() === "l") {
-          window.location.href = "/api/login";
-        } else if (command.trim() !== "") {
-          terminal.writeln(`Unknown command: ${command}`);
-        }
-        command = "";
-        terminal.write(PROMPT);
-      } else if (domEvent.key === "Backspace") {
-        if (command.length > 0) {
-          command = command.slice(0, -1);
-          terminal.write("\b \b");
-        }
-      } else {
-        command += key;
-        terminal.write(key);
-      }
-    });
-  
-    return () => terminal.dispose();
-  }, [terminal]);
-
-  useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const code = params.get("code");
-
     if (code) {
       fetch(`/api/callback?code=${code}`)
         .then(res => res.json())
-        .then(data => {
+        .then(async (data) => {
           setAuth({
             accessToken: data.access_token,
             tokenType: data.token_type,
             expiresIn: data.expires_in,
             refreshToken: data.refresh_token,
             scope: data.scope,
-          })
+          });
+      
+          const newSpotifySDK = SpotifyApi.withAccessToken(data.clientId, {
+            access_token: data.access_token,
+            token_type: data.tokenType,
+            expires_in: data.expiresIn,
+            refresh_token: data.refreshToken,
+          });
+
+          setSpotifySDK(newSpotifySDK);
+          terminal.setSpotifySDK(newSpotifySDK);
+
           router.push("/");
         });
     }
-  }, [router]);
+  }, [router, terminal]);
 
   return (
     <div id="terminal-container" className="h-full w-full">

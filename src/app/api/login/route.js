@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 export async function GET() {
   const clientId = process.env.SPOTIFY_CLIENT_ID;
   const redirectUri = process.env.REDIRECT_TARGET;
-
   const state = Math.random().toString(36).substring(2, 18);
   const scope = [
     "user-read-private",

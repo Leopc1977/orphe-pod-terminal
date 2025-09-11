@@ -1,6 +1,4 @@
 import { create } from 'zustand'
-import { Terminal } from "@xterm/xterm";
-import { FitAddon } from "@xterm/addon-fit";
 
 export const store = create((set) => ({
     accessToken: null,
@@ -25,4 +23,9 @@ export const store = create((set) => ({
     setTerminal: (term) => {
       set(() => ({ terminal: term }));
     },
+
+    spotifySDK: null,
+    setSpotifySDK: (spotifySDK) => {
+      set(() => ({spotifySDK: spotifySDK}))
+    }
 }));

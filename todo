@@ -1,5 +1,77 @@
-- mettre le xterm dans la class ohohohoh
-- ajouter des utils api spotify
 - ajouter les jsons & les parser dans le local storage
 - manipuler les jsons via des stats simple
 - manipuler via des llm ?
+- PUT les json dans de indexdb to zustand
+
+- Nouveaux artistes découverts – Combien d’artistes tu as découverts cette année.
+- Nouveaux genres découverts – Combien de genres différents tu as explorés.
+
+- Quizz interactifs – Jeux pour deviner ton top des artistes, podcasts ou décennies.
+
+- Story of Your 2020 – Mini-story retraçant la progression d’une chanson préférée au fil de l’année.
+
+- Badges Premium – Récompenses selon ton comportement :
+    - Tastemaker : Playlists suivies par d’autres.
+    - Pioneer : Écoute précoce de chansons avant qu’elles deviennent populaires.
+    - Collector : Nombre de chansons ajoutées aux playlists.
+
+- Playlists personnalisées :
+    - Your Top Songs : Ta compilation personnelle de l’année.
+    - Missed Hits : Titres populaires que tu n’avais pas encore écoutés.
+    - On Record : Expérience multimédia autour de tes artistes favoris (selon pays).
+    - Version web publique – Permet aux non-utilisateurs de voir les tendances globales.
+
+2017
+
+Nombre de chansons et genres explorés : diversité de ton écoute.
+
+Playlists personnalisées : suggestions basées sur tes habitudes.
+
+2018
+
+Partage sur réseaux sociaux : possibilité de partager tes résultats.
+
+Découverte de nouveaux artistes : métrique sur les artistes que tu as découverts.
+
+
+2019
+
+Décennie en rétrospective : tes artistes les plus écoutés de la décennie.
+
+
+2020
+
+Quizz interactifs : deviner tes tops de l’année.
+
+Story of Your 2020 : évolution de ta chanson préférée.
+
+
+
+2021
+
+Audio Aura : visualisation de ton humeur musicale.
+
+2021: The Movie : tes chansons associées à des scènes de film.
+
+Playing Cards : jeu interactif sur tes habitudes d’écoute.
+
+
+2022
+
+Listening Personality : ton profil d’écoute parmi 16 types.
+
+Audio Day : évolution de tes goûts selon les moments de la journée.
+
+Partage sur WhatsApp et Line : possibilité de partager tes résultats.
+
+
+2023
+
+Sound Town : ville musicale interactive.
+
+Me in 2023 : ton personnage d’écoute.
+
+
+2024
+
+Music Evolution : évolution de tes goûts musicaux.

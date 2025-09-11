@@ -22,7 +22,13 @@ export async function GET(req) {
     body: params,
   });
 
-  const data = await response.json();
+  const responseData = await response.json();
+
+  const data = {
+    ...responseData,
+    clientId: clientId,
+    clientSecret: clientSecret
+  }
 
   return new Response(JSON.stringify(data), {
     status: 200,

@@ -1,7 +1,3 @@
-export default class Terminal {
-    #terminal
+import TerminalManager from "./TerminalManager";
 
-    constructor() {
-        
-    }
-}
+export default TerminalManager;
