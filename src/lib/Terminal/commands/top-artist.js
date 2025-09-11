@@ -1,4 +1,3 @@
-import formatJSON from "../../utils/formatJSON";
 import getTopArtist from "../../Spotify/getTopArtist";
 
 export default function topArtist() {

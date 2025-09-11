@@ -1,6 +1,8 @@
 import clear from "./commands/clear";
 import help from "./commands/help";
 import login from "./commands/login";
+import newArtist from "./commands/new-artist";
+import newGenre from "./commands/new-genre";
 import topArtist from "./commands/top-artist";
 import topGenre from "./commands/top-genre";
 import topSong from "./commands/top-song";
@@ -25,6 +27,8 @@ export default class Terminal {
       this.addCommand(topSong);      
       this.addCommand(topGenre);
       this.addCommand(totalStreamTime);
+      this.addCommand(newArtist);
+      this.addCommand(newGenre);
     }
 
     setSpotifySDK(spotifySDK) {
@@ -35,7 +39,7 @@ export default class Terminal {
       return this.#commands.entries()
     }
 
-    start(prompt) {
+    async start(prompt) {
       if (prompt) this.#prompt = prompt;
       this.terminal.write(this.#prompt);
   
@@ -61,9 +65,6 @@ export default class Terminal {
           if (this.#command.trim() !== "") {
             this.executeCommand(this.#command.trim());
           }
-  
-          this.#command = "";
-          this.write(this.#prompt);
         } else if (domEvent.key === "Backspace") {
           if (this.#command.length > 0) {
             this.#command = this.#command.slice(0, -1);
@@ -88,12 +89,15 @@ export default class Terminal {
       this.terminal.writeln(str);
     }
   
-    executeCommand(input) {
+    async executeCommand(input) {
         const [commandName, ...args] = input.split(" ");
 
         if (this.#commands.has(commandName)) {
           const { action } = this.#commands.get(commandName);
-          action.apply(this, args);
+          await action.apply(this, args);
+            
+          this.#command = "";
+          this.write(this.#prompt);
         } else {
           this.writeln(`Unknown command: ${commandName}`);
         }
@@ -106,9 +110,9 @@ export default class Terminal {
   
     #replaceLine(text) {
       const clear = "\b \b".repeat(this.#command.length);
+
       this.write(clear);
       this.#command = text;
       this.write(this.#command);
     }
-  }
-  
+}

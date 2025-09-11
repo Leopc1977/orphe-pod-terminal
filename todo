@@ -1,10 +1,10 @@
 - ajouter les jsons & les parser dans le local storage
-- manipuler les jsons via des stats simple
 - manipuler via des llm ?
 - PUT les json dans de indexdb to zustand
 
-- Nouveaux artistes découverts – Combien d’artistes tu as découverts cette année.
-- Nouveaux genres découverts – Combien de genres différents tu as explorés.
+---
+
+- Nouveaux genres découverts - Combien de genres différents tu as explorés.
 
 - Quizz interactifs – Jeux pour deviner ton top des artistes, podcasts ou décennies.
 

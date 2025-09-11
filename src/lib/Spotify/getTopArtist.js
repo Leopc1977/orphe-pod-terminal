@@ -9,13 +9,15 @@ export default async function getTopArtist(filePath) {
     let topArtists = table
         .groupby("master_metadata_album_artist_name")
         .rollup({ 
-        total_ms: d => aq.op.sum(d.ms_played),
-        total_min: d => aq.op.sum(d.ms_played) / 60000
+            total_min: d => aq.op.sum(d.ms_played) / 60000
         })
-        .orderby(aq.desc("total_ms"))
+        .orderby(aq.desc("total_min"))
         .slice(0, 10)
         .select('master_metadata_album_artist_name', 'total_min')
-        .rename({master_metadata_album_artist_name: 'artist', total_min:'time'})
+        .rename({
+            master_metadata_album_artist_name: 'artist', 
+            total_min:'time'
+        })
 
     topArtists = JSON.parse(topArtists.toJSON());
 

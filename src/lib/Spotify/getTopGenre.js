@@ -22,12 +22,12 @@ export default async function getTopGenre(filePath, spotifySDK) {
         })
 
         const topGenres = {}
+
         for (const v of topArtists.objects()) {
             const trackID = v.uri.split(":").at(-1);
             const track = await spotifySDK.tracks.get(trackID);
             const artistIDs = track.artists.map(a=>a.id);
         
-            // ⚠️ attention à forEach + async → utilise for...of pour bien attendre
             for (const artistID of artistIDs) {
                 const artist = await spotifySDK.artists.get(artistID);
                 const genres = artist.genres;
@@ -42,13 +42,11 @@ export default async function getTopGenre(filePath, spotifySDK) {
                 });
             }
         }
+
         const genreList = Object.entries(topGenres).map(([genre, data]) => ({
             genre,
             time: data.time
-        }));        
-    console.log(topArtists.toJSON());
-
-    console.log(genreList);
+        }));
 
     return genreList
 }
