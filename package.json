@@ -13,6 +13,7 @@
     "@xterm/addon-fit": "^0.10.0",
     "@xterm/xterm": "^5.5.0",
     "arquero": "^8.0.3",
+    "eklesia": "^0.1.0",
     "next": "15.5.2",
     "react": "19.1.0",
     "react-dom": "19.1.0",

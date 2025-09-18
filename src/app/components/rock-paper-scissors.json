@@ -1,0 +1,42 @@
+{
+  "name": "Rock-Paper-Scissors",
+  "global_prompt": "Rock Paper Scissors is a two-player hand game where players use hand signals to represent three possible outcomes: rock, paper, or scissors. \n\nThe rules of the game are simple:\n\n1. Each player simultaneously chooses one of three signals: rock, paper, or scissors.\n\n2. The outcome of the game is determined by the following rules:\n* Rock beats scissors (rock crushes scissors)\n* Scissors beat paper (scissors cut paper)\n* Paper beats rock (paper covers rock)\n* If both players choose the same hand signal, the game is a tie, and the players play again.\n\n3. The winner of each round is determined by comparing the chosen signals. The first player to win 2 rounds wins the game.",
+  "environment": {
+    "type": "conversation",
+    "moderator": {
+      "role_desc": "You are a Rock Paper Scissors judge. Follow this EXACT process:\n\n## STEP 1: Find the most recent moves\nLook at the conversation history. Find the LAST message from Player 1 and the LAST message from Player 2.\n\n## STEP 2: State what you found\nWrite: \"This round: Player 1 played [move], Player 2 played [move]\"\n\n## STEP 3: Apply the rules EXACTLY\nThe rules are:\n- rock beats scissors\n- scissors beats paper  \n- paper beats rock\n- same move = tie\n\nDetermine the winner using ONLY these rules.\n\n## STEP 4: Count wins from scratch\nGo through ALL previous rounds in the conversation and count how many times each player has won (not tied). Keep a running total.\n\n## STEP 5: Output in this EXACT format\nThis round: Player 1 played [X], Player 2 played [Y]\nRound winner: [Player 1/Player 2/Tie]\nTotal wins so far: Player 1 = [number], Player 2 = [number]\n\nIf either player now has 2 total wins, add:\nGAME OVER! [Player X] wins the match!\n\n## CRITICAL REMINDERS:\n- rock beats scissors (NOT the other way around)\n- scissors beats paper (NOT the other way around)  \n- paper beats rock (NOT the other way around)\n- Only count actual wins, ignore ties\n- Count ALL wins from the entire conversation history each time",
+      "terminal_condition": "Count total wins for each player from the entire conversation. If Player 1 has 2 or more wins, OR Player 2 has 2 or more wins, answer 'Yes'. Otherwise answer 'No'.",
+      "terminal_sentences": ["Yes"],
+      "provider": {
+        "type": "openai-chat",
+        "model": "deepseek-llm-7b-chat.Q4_K_M",
+        "temperature": 0.0,
+        "max_tokens": 200
+      },
+      "moderator_visibility": "all",
+      "period": "round"
+    }
+  },
+  "agents": [
+    {
+      "name": "Player 1",
+      "role_desc": "Say only one word: rock, paper, or scissors. Pick randomly. : ",
+      "provider": {
+        "type": "openai-chat",
+        "model": "deepseek-llm-7b-chat.Q4_K_M",
+        "temperature": 1.0,
+        "max_tokens": 2
+      }
+    },
+    {
+      "name": "Player 2", 
+      "role_desc": "Say only one word: rock, paper, or scissors. Pick randomly. :",
+      "provider": {
+        "type": "openai-chat",
+        "model": "deepseek-llm-7b-chat.Q4_K_M",
+        "temperature": 1.0,
+        "max_tokens": 2
+      }
+    }
+  ]
+}

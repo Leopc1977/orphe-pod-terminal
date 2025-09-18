@@ -2,22 +2,17 @@
 - manipuler via des llm ?
 - PUT les json dans de indexdb to zustand
 
----
+- simulation entre années personnifié via eklasia
 
-- Nouveaux genres découverts - Combien de genres différents tu as explorés.
+---
 
 - Quizz interactifs – Jeux pour deviner ton top des artistes, podcasts ou décennies.
 
 - Story of Your 2020 – Mini-story retraçant la progression d’une chanson préférée au fil de l’année.
 
-- Badges Premium – Récompenses selon ton comportement :
-    - Tastemaker : Playlists suivies par d’autres.
-    - Pioneer : Écoute précoce de chansons avant qu’elles deviennent populaires.
-    - Collector : Nombre de chansons ajoutées aux playlists.
 
 - Playlists personnalisées :
     - Your Top Songs : Ta compilation personnelle de l’année.
-    - Missed Hits : Titres populaires que tu n’avais pas encore écoutés.
     - On Record : Expérience multimédia autour de tes artistes favoris (selon pays).
     - Version web publique – Permet aux non-utilisateurs de voir les tendances globales.
 

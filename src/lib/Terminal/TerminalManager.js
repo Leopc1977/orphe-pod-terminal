@@ -96,11 +96,12 @@ export default class Terminal {
           const { action } = this.#commands.get(commandName);
           await action.apply(this, args);
             
-          this.#command = "";
-          this.write(this.#prompt);
         } else {
           this.writeln(`Unknown command: ${commandName}`);
         }
+        
+        this.write(this.#prompt);
+        this.#command = "";
       }
 
       addCommand(getCommand) {
