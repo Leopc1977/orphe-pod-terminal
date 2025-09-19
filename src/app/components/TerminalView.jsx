@@ -11,10 +11,12 @@ import TerminalManager from "../../lib/Terminal";
 import { SpotifyApi } from "@spotify/web-api-ts-sdk";
 
 import { Agent, Arena, OpenAIGenericProvider, User, ConversationEnvironment, TerminalInputProvider, Orchestrator  } from "eklesia";
+import { WebLinksAddon } from "@xterm/addon-web-links";
 
 export default function TerminalView() {
   const { setAuth, setTerminal, terminal, setSpotifySDK, spotifySDK } = useStore()
 
+  const fileInputRef = useRef(null);
   const terminalRef = useRef(null);
   const fitAddon = new FitAddon();
   const router = useRouter();
@@ -100,6 +102,28 @@ export default function TerminalView() {
   //   initArena();
   // }, []);
 
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+  
+    if (file.type !== "application/json") {
+      console.warn("Fichier ignoré (pas du JSON).");
+      return;
+    }
+  
+    try {
+      const text = await file.text();
+      const jsonData = JSON.parse(text);
+      console.log("JSON chargé :", jsonData);
+
+      
+      
+    } catch (err) {
+      console.error("Erreur lors du parsing JSON :", err);
+    }
+  };
+  
+
   useEffect(() => {
     const term = new Terminal({
       cols: 80,
@@ -115,6 +139,22 @@ export default function TerminalView() {
     term.loadAddon(fitAddon);
     term.open(terminalRef.current);
     fitAddon.fit();
+    term.loadAddon(
+      new WebLinksAddon((event, uri) => {
+        console.log(uri)
+        if (uri.startsWith("upload://file")) {
+          fileInputRef.current.click();
+        } else {
+          window.open(uri, "_blank");
+        }
+      }, {
+        urlRegex: /((https?|HTTPS?):[/]{2}|upload:\/\/)[^\s"'!*(){}|\\^<>`]*[^\s"':,.!?{}|\\^~\[\]`()<>]/
+      })
+    );
+
+    term.writeln(
+      "upload://file/test"
+    );
 
     const newTerminal = new TerminalManager(term)
     newTerminal.start();
@@ -158,6 +198,12 @@ export default function TerminalView() {
   return (
     <div id="terminal-container" className="h-full w-full">
       <div id="terminal" ref={terminalRef} style={{ width: "100%", height: "100%" }} />
+      <input
+        type="file"
+        ref={fileInputRef}
+        style={{ display: "none" }}
+        onChange={handleFileChange}
+      />
     </div>
   )
 }
