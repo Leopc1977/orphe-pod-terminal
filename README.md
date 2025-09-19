@@ -1,4 +1,4 @@
-# Spotify AI Terminal
+# Orphe-Pod-Termina
 ⚠️ Work in Progress: This project is not finished yet. Features and UI may change.
 
 🎵 Explore your Spotify listening data through an interactive browser terminal.
