@@ -1,36 +1,23 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Spotify AI Terminal
+⚠️ Work in Progress: This project is not finished yet. Features and UI may change.
 
-## Getting Started
+🎵 Explore your Spotify listening data through an interactive browser terminal.
+Analyze your listening habits, discover favorite artists and genres, and get AI-driven recommendations.
 
-First, run the development server:
+# Features
+- Modern terminal interface with xterm.js
+- OAuth authentication with Spotify
+- Data analysis with Arquero
+- State management using Zustand
+- AI agents for personalized insights
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+# Tech Stack
+Next.js 15 • React 19 • Tailwind CSS • xterm.js • Spotify Web API • Eklesia (AI agents)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Usage
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Clone the repo
+1. Install dependencies: `npm install`
+1. Run the dev server: `npm run dev`
+1. Open your browser at `http://localhost:3000`
+1. Log in with Spotify and start exploring your data
