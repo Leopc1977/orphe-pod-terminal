@@ -1,17 +1,15 @@
 import getTopGenre from "../../Spotify/getTopGenre.js";
+import getMax from "../../utils/getMax.js";
 
 export default function topGenre() {
     return {
         name: "topgenre",
         desc: "test to Spotify",
         action: async function (a) {
-            const topSongs = await getTopGenre(
-                "../datas/Streaming_History_Audio_2014-2020_0.json",
-                this.spotifySDK
-            );
+            const topSongs = await getTopGenre(this.spotifySDK);
 
             // Trouver le max pour normaliser la longueur des barres
-            const maxTime = Math.max(...topSongs.map(d => d.time));
+            const maxTime = getMax(...topSongs.map(d => d.time));
 
             // Affichage ASCII
             this.writeln("");

@@ -9,6 +9,7 @@ import useStore from "../../lib/useStore";
 import { useRouter } from "next/navigation";
 import TerminalManager from "../../lib/Terminal";
 import { SpotifyApi } from "@spotify/web-api-ts-sdk";
+import db from "../../lib/IndexDB/db";
 
 import { Agent, Arena, OpenAIGenericProvider, User, ConversationEnvironment, TerminalInputProvider, Orchestrator  } from "eklesia";
 import { WebLinksAddon } from "@xterm/addon-web-links";
@@ -103,27 +104,28 @@ export default function TerminalView() {
   // }, []);
 
   const handleFileChange = async (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
   
-    if (file.type !== "application/json") {
-      console.warn("Fichier ignoré (pas du JSON).");
-      return;
-    }
+    for (const file of files) {
+      if (file.type !== "application/json") {
+        console.warn(`Fichier ignoré (${file.name}, pas du JSON).`);
+        continue;
+      }
   
-    try {
-      const text = await file.text();
-      const jsonData = JSON.parse(text);
-      console.log("JSON chargé :", jsonData);
+      try {
+        const text = await file.text();
+        const jsonData = JSON.parse(text);
 
-      
-      
-    } catch (err) {
-      console.error("Erreur lors du parsing JSON :", err);
+        console.log(`JSON chargé depuis ${file.name}:`, jsonData);
+
+        await db.history.bulkAdd(jsonData);
+      } catch (err) {
+        console.error(`Erreur lors du parsing JSON (${file.name}):`, err);
+      }
     }
   };
   
-
   useEffect(() => {
     const term = new Terminal({
       cols: 80,
@@ -200,6 +202,7 @@ export default function TerminalView() {
       <div id="terminal" ref={terminalRef} style={{ width: "100%", height: "100%" }} />
       <input
         type="file"
+        multiple
         ref={fileInputRef}
         style={{ display: "none" }}
         onChange={handleFileChange}

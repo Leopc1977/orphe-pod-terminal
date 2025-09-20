@@ -1,9 +1,8 @@
 import * as aq from "arquero"
-import getFileContent from "../utils/getFileContent";
+import db from "../IndexDB/db";
 
-export default async function getTopSong(filePath) {
-    const rawText = await getFileContent(filePath);
-    const data = JSON.parse(rawText);
+export default async function getTopSong() {
+    const data = await db.history.toArray();
     const table = aq.from(data);
 
     const totalMinutes = table

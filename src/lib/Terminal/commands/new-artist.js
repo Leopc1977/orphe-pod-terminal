@@ -1,11 +1,12 @@
 import getNewArtist from "../../Spotify/getNewArtist.js";
+import getMax from "../../utils/getMax.js";
 
 export default function newArtist() {
     return {
         name: "na",
         desc: "test to Spotify",
         action: async function () {
-            const topArtists = await getNewArtist("../datas/Streaming_History_Audio_2014-2020_0.json");
+            const topArtists = await getNewArtist();
             const artists = topArtists.list;
             const lastYear = topArtists.lastYear;
 
@@ -17,7 +18,7 @@ export default function newArtist() {
             this.writeln(`Decouverte artiste de l'année ${lastYear} :\n`);
 
             // Trouver le max pour normaliser la longueur des barres
-            const maxTime = Math.max(...artists.map(d => d.time));
+            const maxTime = getMax(...artists.map(d => d.time));
 
             // Affichage ASCII
             this.writeln("");

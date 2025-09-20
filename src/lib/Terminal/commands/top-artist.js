@@ -1,14 +1,14 @@
 import getTopArtist from "../../Spotify/getTopArtist";
+import getMax from "../../utils/getMax";
 
 export default function topArtist() {
     return {
         name: "top10",
         desc: "test to Spotify",
         action: async function () {
-            const topArtists = await getTopArtist("../datas/Streaming_History_Audio_2014-2020_0.json");
+            const topArtists = await getTopArtist();
 
-            // Trouver le max pour normaliser la longueur des barres
-            const maxTime = Math.max(...topArtists.map(d => d.time));
+            const maxTime = getMax(...topArtists.map(d => d.time));
 
             // Affichage ASCII
             this.writeln("");

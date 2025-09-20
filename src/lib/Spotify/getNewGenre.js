@@ -1,11 +1,11 @@
 import * as aq from "arquero"
-import getFileContent from "../utils/getFileContent";
+import db from "../IndexDB/db";
+import getMax from "../utils/getMax";
 
 const THRESHOLD = 5
 
-export default async function getNewArtist(filePath, spotifySDK) {
-    const rawText = await getFileContent(filePath)
-    const data = JSON.parse(rawText);
+export default async function getNewArtist(spotifySDK) {
+    const data = await db.history.toArray();
     const table = aq.from(data)
 
     const formatedTable = table
@@ -13,8 +13,10 @@ export default async function getNewArtist(filePath, spotifySDK) {
             year: aq.escape(d => new Date(d.ts).getFullYear())
         })
         .rename({master_metadata_album_artist_name: "artist"})
-
-    const lastYear = Math.max(...formatedTable.array("year"));
+        console.log(formatedTable.array("year"))
+        const lastYear = getMax(
+            formatedTable.array("year")
+        );
 
     const filteredTable = formatedTable
         .groupby("artist")

@@ -1,11 +1,12 @@
 import getNewGenre from "../../Spotify/getNewGenre.js";
+import getMax from "../../utils/getMax.js";
 
 export default function newGenre() {
     return {
         name: "ng",
         desc: "test to Spotify",
         action: async function () {
-            const {genres, lastYear} = await getNewGenre("../datas/Streaming_History_Audio_2014-2020_0.json", this.spotifySDK);
+            const {genres, lastYear} = await getNewGenre(this.spotifySDK);
 
             if (genres.length === 0) {
                 this.writeln(`Aucun genre trouvé pour l'année ${lastYear}.`);
@@ -15,7 +16,7 @@ export default function newGenre() {
             this.writeln(`Decouverte genre de l'année ${lastYear} :\n`);
 
             // Trouver le max pour normaliser la longueur des barres
-            const maxTime = Math.max(...genres.map(d => d.time));
+            const maxTime = getMax(...genres.map(d => d.time));
 
             // Affichage ASCII
             this.writeln("");

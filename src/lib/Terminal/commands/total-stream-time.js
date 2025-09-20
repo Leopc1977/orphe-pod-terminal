@@ -5,10 +5,7 @@ export default function totalStreamTime() {
         name: "t",
         desc: "test to Spotify",
         action: async function (a) {
-            const totalMinutes = await getTotalStreamTime(
-                "../datas/Streaming_History_Audio_2014-2020_0.json",
-                this.spotifySDK
-            );
+            const totalMinutes = await getTotalStreamTime(this.spotifySDK);
 
             // Affichage ASCII simple
             this.writeln("");
