@@ -45,7 +45,7 @@ export default async function getTopGenre(spotifySDK) {
         }
 
         const genreList = Object.entries(topGenres).map(([genre, data]) => ({
-            genre,
+            item: genre,
             time: data.time
         }));
 

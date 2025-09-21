@@ -56,7 +56,7 @@ export default async function getNewArtist(spotifySDK) {
     }
 
     const genreList = Object.entries(topGenres).map(([genre, data]) => ({
-        genre,
+        item: genre,
         time: data.time
     })).sort((a, b) => a.time-b.time)
 

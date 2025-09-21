@@ -17,7 +17,7 @@ export default async function getTopSong() {
     .orderby(aq.desc("total_min"))
         .slice(0, 10)
         .select('master_metadata_track_name', 'total_min')
-        .rename({master_metadata_track_name: 'song', total_min:'time'})
+        .rename({master_metadata_track_name: 'item', total_min:'time'})
 
     topArtists = JSON.parse(topArtists.toJSON());
 

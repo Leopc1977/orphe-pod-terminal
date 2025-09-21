@@ -18,7 +18,7 @@ export default async function getTopArtist() {
         .slice(0, 10)
         .select('master_metadata_album_artist_name', 'total_min')
         .rename({
-            master_metadata_album_artist_name: 'artist', 
+            master_metadata_album_artist_name: 'item', 
             total_min:'time'
         })
 

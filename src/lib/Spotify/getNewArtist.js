@@ -35,7 +35,7 @@ export default async function getNewArtist() {
     const artistList = []
     for (const v of filteredTable.objects()) {
         artistList.push({
-            artist: v.artist,
+            item: v.artist,
             time: v.time
         })
     }

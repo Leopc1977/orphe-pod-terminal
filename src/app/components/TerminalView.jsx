@@ -10,9 +10,9 @@ import { useRouter } from "next/navigation";
 import TerminalManager from "../../lib/Terminal";
 import { SpotifyApi } from "@spotify/web-api-ts-sdk";
 import db from "../../lib/IndexDB/db";
+import { WebLinksAddon } from "@xterm/addon-web-links";
 
 import { Agent, Arena, OpenAIGenericProvider, User, ConversationEnvironment, TerminalInputProvider, Orchestrator  } from "eklesia";
-import { WebLinksAddon } from "@xterm/addon-web-links";
 
 export default function TerminalView() {
   const { setAuth, setTerminal, terminal, setSpotifySDK, spotifySDK } = useStore()
@@ -143,7 +143,6 @@ export default function TerminalView() {
     fitAddon.fit();
     term.loadAddon(
       new WebLinksAddon((event, uri) => {
-        console.log(uri)
         if (uri.startsWith("upload://file")) {
           fileInputRef.current.click();
         } else {
@@ -181,13 +180,15 @@ export default function TerminalView() {
             refreshToken: data.refresh_token,
             scope: data.scope,
           });
-      
+
           const newSpotifySDK = SpotifyApi.withAccessToken(data.clientId, {
             access_token: data.access_token,
             token_type: data.tokenType,
             expires_in: data.expiresIn,
             refresh_token: data.refreshToken,
           });
+
+          newSpotifySDK.player.getRecentlyPlayedTracks()
 
           setSpotifySDK(newSpotifySDK);
           terminal.setSpotifySDK(newSpotifySDK);
