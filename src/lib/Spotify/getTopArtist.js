@@ -8,7 +8,7 @@ export default async function getTopArtist() {
 
     let topArtists = table
         .filter(
-            master_metadata_album_artist_name !== null
+            d => d.master_metadata_album_artist_name !== null
         )
         .groupby("master_metadata_album_artist_name")
         .rollup({ 
