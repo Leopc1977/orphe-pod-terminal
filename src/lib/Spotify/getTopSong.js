@@ -8,16 +8,16 @@ export default async function getTopSong() {
 
     let topArtists = table
     .filter(
-        d => d.master_metadata_track_name !== null
+        d => d.trackName !== null
     )
-    .groupby("master_metadata_track_name")
+    .groupby("trackName")
     .rollup({ 
         total_min: d => aq.op.sum(d.ms_played) / 60000
     })
     .orderby(aq.desc("total_min"))
         .slice(0, 10)
-        .select('master_metadata_track_name', 'total_min')
-        .rename({master_metadata_track_name: 'item', total_min:'time'})
+        .select('trackName', 'total_min')
+        .rename({trackName: 'item', total_min:'time'})
 
     topArtists = JSON.parse(topArtists.toJSON());
 

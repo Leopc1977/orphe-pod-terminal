@@ -12,8 +12,9 @@ export default async function getNewArtist() {
         .derive({
             year: aq.escape(d => new Date(d.ts).getFullYear())
         })
+        .print()
         .rename({
-            master_metadata_album_artist_name: "artist"
+            artistName: "artist"
         })
 
     const lastYear = getMax(formatedTable.array("year"));

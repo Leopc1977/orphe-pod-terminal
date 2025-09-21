@@ -6,19 +6,20 @@ export default async function getTopGenre(spotifySDK) {
     const table = aq.from(data)
     
     let topArtists = table
+        .print()
         .filter(
-            d => d.master_metadata_album_artist_name !== null
+            d => d.artistName !== null
         )
-        .groupby("master_metadata_album_artist_name")
+        .groupby("artistName")
         .rollup({
             total_min: d => aq.op.sum(d.ms_played) / 60000,
-            uri: d => aq.op.max(d.spotify_track_uri)
+            uri: d => aq.op.max(d.IDTrack)
         })
         .orderby(aq.desc("total_min"))
         .slice(0, 10)
-        .select('master_metadata_album_artist_name', 'uri', 'total_min')
+        .select('artistName', 'uri', 'total_min')
         .rename({
-            master_metadata_album_artist_name: 'artist',
+            artistName: 'artist',
             total_min:'time'
         })
 

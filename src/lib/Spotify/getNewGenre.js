@@ -12,7 +12,7 @@ export default async function getNewArtist(spotifySDK) {
         .derive({
             year: aq.escape(d => new Date(d.ts).getFullYear())
         })
-        .rename({master_metadata_album_artist_name: "artist"})
+        .rename({artistName: "artist"})
         console.log(formatedTable.array("year"))
         const lastYear = getMax(
             formatedTable.array("year")
@@ -24,7 +24,7 @@ export default async function getNewArtist(spotifySDK) {
             count: aq.op.count(),
             firstYear: aq.op.min("year"),
             time: d => aq.op.sum(d.ms_played) / 60000,
-            uri: d => aq.op.max(d.spotify_track_uri)
+            uri: d => aq.op.max(d.IDTrack)
         })
         .filter(
             aq.escape(d => d.count > THRESHOLD)

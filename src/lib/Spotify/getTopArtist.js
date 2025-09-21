@@ -1,5 +1,4 @@
 import * as aq from "arquero"
-import getFileContent from "../utils/getFileContent";
 import db from "../IndexDB/db";
 
 export default async function getTopArtist() {
@@ -8,17 +7,17 @@ export default async function getTopArtist() {
 
     let topArtists = table
         .filter(
-            d => d.master_metadata_album_artist_name !== null
+            d => d.artistName !== null
         )
-        .groupby("master_metadata_album_artist_name")
+        .groupby("artistName")
         .rollup({ 
             total_min: d => aq.op.sum(d.ms_played) / 60000
         })
         .orderby(aq.desc("total_min"))
         .slice(0, 10)
-        .select('master_metadata_album_artist_name', 'total_min')
+        .select('artistName', 'total_min')
         .rename({
-            master_metadata_album_artist_name: 'item', 
+            artistName: 'item', 
             total_min:'time'
         })
 

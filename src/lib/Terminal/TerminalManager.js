@@ -3,6 +3,7 @@ import help from "./commands/help";
 import login from "./commands/login";
 import newArtist from "./commands/new-artist";
 import newGenre from "./commands/new-genre";
+import recentTracks from "./commands/recent-tracks";
 import topArtist from "./commands/top-artist";
 import topGenre from "./commands/top-genre";
 import topSong from "./commands/top-song";
@@ -29,6 +30,7 @@ export default class Terminal {
       this.addCommand(totalStreamTime);
       this.addCommand(newArtist);
       this.addCommand(newGenre);
+      this.addCommand(recentTracks);
     }
 
     setSpotifySDK(spotifySDK) {

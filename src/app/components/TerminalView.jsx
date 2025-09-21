@@ -11,6 +11,7 @@ import TerminalManager from "../../lib/Terminal";
 import { SpotifyApi } from "@spotify/web-api-ts-sdk";
 import db from "../../lib/IndexDB/db";
 import { WebLinksAddon } from "@xterm/addon-web-links";
+import Dexie from "dexie";
 
 export default function TerminalView() {
   const { setAuth, setTerminal, terminal, setSpotifySDK, spotifySDK } = useStore()
@@ -33,13 +34,48 @@ export default function TerminalView() {
       try {
         const text = await file.text();
         const jsonData = JSON.parse(text);
-
         console.log(`JSON chargé depuis ${file.name}:`, jsonData);
 
-        await db.history.bulkAdd(jsonData);
+        let data = null;
+        if ("master_metadata_album_artist_name" in jsonData[0]) {
+          data = jsonData
+            .filter(d => d.IDTrack !== null)
+            .map(d => {
+              const IDTrack = d.IDTrack.split(":").at(-1);
+
+              return {
+                ts: d.ts,
+                artistName: d.master_metadata_album_artist_name,
+                trackName: d.master_metadata_track_name,
+                ms_played: d.ms_played,
+                IDTrack: IDTrack,
+              }
+            });
+        } else {
+          data = jsonData
+            .filter(d => d.IDTrack !== null)
+            .map(d => {
+              const date = new Date(d.endTime + ":00");
+              const isoString = date.toISOString();
+              return {
+                ts: isoString,
+                artistName: jsonData.artistName,
+                trackName: jsonData.trackName,
+              }
+            })
+        }
+        
+        console.log("JSON formatté: ", data);
+
+        await db.history.bulkAdd(data, { allKeys: true })
+          .catch(Dexie.BulkError, e => {
+            console.warn(`${e.failures.length} doublons ignorés`);
+          });
+
       } catch (err) {
         console.error(`Erreur lors du parsing JSON (${file.name}):`, err);
       }
+      
     }
   };
   

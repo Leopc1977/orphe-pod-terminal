@@ -1,4 +1,12 @@
+import stringWidth from 'string-width';
+
 import getMax from "../../../utils/getMax";
+
+function padVisual(str, targetWidth) {
+    const width = stringWidth(str);
+    const padding = Math.max(targetWidth - width, 0);
+    return str + " ".repeat(padding);
+}
 
 export default function displayBarChart(list, maxWidth = 50) {
     if (!list || list.length === 0) {
@@ -35,6 +43,6 @@ export default function displayBarChart(list, maxWidth = 50) {
 
         const minutesLabel = displayTime.padStart(6);
 
-        this.writeln(`${d.item.padEnd(20)} | ${color}${bar}\x1b[0m ${minutesLabel}`);
+        this.writeln(`${padVisual(d.item, 40)} | ${color}${bar}\x1b[0m ${minutesLabel}`);
     });
 }

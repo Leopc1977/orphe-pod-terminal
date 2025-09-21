@@ -8,7 +8,8 @@ export async function GET() {
     "user-read-private",
     "user-read-email",
     "playlist-read-private",
-    "playlist-modify-private"
+    "playlist-modify-private",
+    "user-read-recently-played"
   ].join(" ");
 
   const queryParams = new URLSearchParams({
