@@ -1,4 +1,5 @@
 import clear from "./commands/clear";
+import getMood from "./commands/getMood";
 import help from "./commands/help";
 import login from "./commands/login";
 import newArtist from "./commands/new-artist";
@@ -31,6 +32,7 @@ export default class Terminal {
       this.addCommand(newArtist);
       this.addCommand(newGenre);
       this.addCommand(recentTracks);
+      this.addCommand(getMood);
     }
 
     setSpotifySDK(spotifySDK) {
