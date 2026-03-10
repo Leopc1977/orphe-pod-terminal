@@ -37,11 +37,11 @@ export default function getMood(year=2020) {
             prompt += "Here is the list of tracks, sorted by number of plays (highest first):\n";
 
             const limitedTracks = sortedTracks.slice(0, 100);
-            sortedTracks.forEach(track => {
+            limitedTracks.forEach(track => {
                 prompt += `- ${track.song} by ${track.artist} (${track.count} plays)\n`;
             });
 
-            prompt += "\nPlease respond in a concise narrative analysis, describing the overall mood trends and what they reveal about my listening habits.\n";
+            prompt += "\nPlease respond in a concise narrative analysis, describing the overall mood trends and what they reveal about my listening habits. Do not use markdown formatting, bullet points, bold, italics, or headers. Plain text only.\n";
 
             console.log(prompt)
             // const res = await fetch("http://127.0.0.1:8081/v1/chat/completions", {
@@ -56,7 +56,7 @@ export default function getMood(year=2020) {
             //         ],
             //     }),
             // });
-            
+
             const res = await fetch(`${process.env.NEXT_PUBLIC_LLM_BASE_URL}/chat/completions`, {
                 method: "POST",
                 headers: {
@@ -66,36 +66,27 @@ export default function getMood(year=2020) {
                 body: JSON.stringify({
                   model: process.env.NEXT_PUBLIC_MODEL_NAME,
                   messages: [
-                    { role: "system", content: "You are a music analysis assistant." },
+                    { role: "system", content: "You are a music analysis assistant. Always respond in plain text only, no markdown, no bullet points, no bold, no headers." },
                     { role: "user", content: prompt },
                   ],
                 }),
               });
           
 
-            // 1️⃣ Vérifier le statut HTTP
             if (!res.ok) {
                 throw new Error(`HTTP error! Status: ${res.status}`);
             }
             
-            // 2️⃣ Lire la réponse JSON
             const data = await res.json();
-            
-            // 3️⃣ Extraire le contenu de la réponse
-            const assistantReply = data.choices?.[0]?.message?.content;
-            console.log("LLM response:\n", assistantReply);
-            
-            // 4️⃣ (Optionnel) Si le LLM renvoie du JSON, parser directement
-            let jsonSummary;
-            try {
-                // Cherche un objet JSON dans la réponse
-                jsonSummary = JSON.parse(assistantReply);
-                console.log("Parsed JSON summary:", jsonSummary);
-            } catch (err) {
-                console.warn("Response is not valid JSON, fallback to raw text.");
-            }
-            
-            console.log(data)
+            console.log(data);
+            const raw = data.choices?.[0]?.message?.content || data.choices?.[0]?.message?.reasoning_content || "";
+            const assistantReply = raw.replace(/<think>[\s\S]*?<\/think>/g, "").trim();
+
+            this.writeln("");
+            this.writeln(`\x1b[1m\x1b[36mMood analysis for ${year}:\x1b[0m`);
+            this.writeln("");
+            assistantReply.split("\n").forEach(line => this.writeln(line));
+            this.writeln("");
         }
     }
 }
