@@ -39,9 +39,9 @@ export default function TerminalView() {
         let data = null;
         if ("master_metadata_album_artist_name" in jsonData[0]) {
           data = jsonData
-            .filter(d => d.IDTrack !== null)
+            .filter(d => d.spotify_track_uri != null)
             .map(d => {
-              const IDTrack = d.IDTrack.split(":").at(-1);
+              const IDTrack = d.spotify_track_uri.split(":").at(-1);
 
               return {
                 ts: d.ts,
@@ -53,7 +53,7 @@ export default function TerminalView() {
             });
         } else {
           data = jsonData
-            .filter(d => d.IDTrack !== null)
+            .filter(d => d.IDTrack != null)
             .map(d => {
               const date = new Date(d.endTime + ":00");
               const isoString = date.toISOString();
@@ -71,7 +71,7 @@ export default function TerminalView() {
           .catch(Dexie.BulkError, e => {
             console.warn(`${e.failures.length} doublons ignorés`);
           });
-
+          console.log("Batch uploaded");
       } catch (err) {
         console.error(`Erreur lors du parsing JSON (${file.name}):`, err);
       }
